@@ -62,7 +62,7 @@ if __name__ == '__main__':
     dump_pile = []
     deck = decks()
     while True:
-        if len(deck) == 3:
+        if len(deck) == 1:
             for i in range(len(dump_pile)):
                 deck.append(dump_pile.pop())
         names = input("what is your name? ")
