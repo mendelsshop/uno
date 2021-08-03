@@ -81,7 +81,6 @@ if __name__ == '__main__':
                 print(i)
             continue
         if len(peoples[names].cards) == 0:
-            if peoples[names].level == 7:
                 peoples[names].get_cards()
         peoples[names].add_to_dump()
         print(peoples[names].cards)
