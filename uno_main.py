@@ -9,6 +9,9 @@ class uno_player:
         if self.level == 7:
             for i in range(7):
                 self.cards.append(deck.pop())
+        elif self.level == 6:
+            for i in range(6):
+                self.cards.append(deck.pop)
     def add_to_dump(self):
         dump_pile.append(self.cards.pop())
 
