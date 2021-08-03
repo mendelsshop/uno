@@ -62,7 +62,12 @@ if __name__ == '__main__':
     dump_pile = []
     deck = decks()
     while True:
+        if len(deck) == 3:
+            for i in range(len(dump_pile)):
+                deck.append(dump_pile.pop())
         names = input("what is your name? ")
+        print('deck',len(deck))
+        print('dump_pille',len(dump_pile))
         if names not in peoples:
             print(f'{names} is not a valid name')
             if len(peoples) == 1:
@@ -75,6 +80,7 @@ if __name__ == '__main__':
         if len(peoples[names].cards) == 0:
             if peoples[names].level == 7:
                 peoples[names].get_cards()
+        peoples[names].add_to_dump()
         print(peoples[names].cards)
         amountcard = []
         for i in peoples:
@@ -86,4 +92,4 @@ if __name__ == '__main__':
             del amountcard
         else:
             print('incorrect amount of cards')
-        print(sums)
+        print('sum',sums)
