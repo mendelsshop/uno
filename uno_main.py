@@ -14,7 +14,8 @@ class uno_player:
                 self.cards.append(deck.pop)
     def add_to_dump(self):
         dump_pile.append(self.cards.pop())
-
+    def __str__(self):
+        return self.name
 
 def cards(color): 
     card = []
@@ -49,14 +50,13 @@ def add_player():
         peoples[names] = uno_player(names)
 
 
-     
         while True:
             names = input("what is your name? ")   
             if names in peoples:
                 print('plz try another name that name is already taken')
                 continue
             else:
-                peoples[names] = uno_player(names) 
+                            peoples[names] = uno_player(names) 
             continues = input("do you want to add another person? (yes/no) ")
             if continues == 'yes':
                 names = input("what is your name? ") 
