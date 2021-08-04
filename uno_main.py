@@ -47,7 +47,16 @@ def add_player():
     while True:        
         names = input("what is your name? ") 
         peoples[names] = uno_player(names)
+
+
+     
         while True:
+            names = input("what is your name? ")   
+            if names in peoples:
+                print('plz try another name that name is already taken')
+                continue
+            else:
+                peoples[names] = uno_player(names) 
             continues = input("do you want to add another person? (yes/no) ")
             if continues == 'yes':
                 names = input("what is your name? ") 
@@ -64,13 +73,17 @@ if __name__ == '__main__':
     peoples = add_player()
     dump_pile = []
     deck = decks()
+
+
     while True:
         if len(deck) == 1:
             for i in range(len(dump_pile)):
                 deck.append(dump_pile.pop())
+
+        
         names = input("what is your name? ")
-        print('deck',len(deck))
-        print('dump_pille',len(dump_pile))
+
+
         if names not in peoples:
             print(f'{names} is not a valid name')
             if len(peoples) == 1:
@@ -80,10 +93,13 @@ if __name__ == '__main__':
             for i in peoples:
                 print(i)
             continue
+
+
         if len(peoples[names].cards) == 0:
                 peoples[names].get_cards()
-        peoples[names].add_to_dump()
         print(peoples[names].cards)
+
+
         amountcard = []
         for i in peoples:
             amountcard.append(len(peoples[i].cards))
@@ -94,4 +110,4 @@ if __name__ == '__main__':
             del amountcard
         else:
             print('incorrect amount of cards')
-        print('sum',sums)
+    
