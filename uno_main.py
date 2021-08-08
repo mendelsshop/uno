@@ -1,5 +1,113 @@
 import random
-
+def make_car_longer(cardname,card_length, space_length):
+    if  card_length == space_length:
+        pass
+    else:
+        sum_len_blank = space_length - card_length
+        left_pad = sum_len_blank % 2
+        if left_pad != 0:
+            left_pad = (sum_len_blank // 2) + 1
+        else:
+            left_pad = sum_len_blank / 2
+        right_pad = sum_len_blank // 2
+    blank = '' 
+    extended_name = f'|{blank: <{right_pad}}{cardname}{blank: >{left_pad}}| '
+    return extended_name
+    
+        
+def cardify(card):
+    '''a funnction to display a(n) uno card(s)'''
+    z = len(card)
+    blanks = len('                ')
+    for q in range(z):
+        print(' ________________  ', end = '')
+    print()
+    for q in range(z):
+        print('/                \\ ',end = '')    
+    print()
+    for q in range(z):
+        print('|                | ', end = '')    
+    print()
+    for q in range(z):
+        print('|                | ', end = '')
+    print()
+    for x in range(z):
+        len_of_cards = len(card[x])
+        crds_extended = make_car_longer(cardname = card[x], card_length = len_of_cards,space_length = blanks)
+        print(crds_extended,end='')
+        # if  len_of_cards == blanks:
+        #     print(blanks)
+        #     pass
+        # else:
+        #     sum_len_blank = blanks - len_of_cards
+        #     left_pad = sum_len_blank % 2
+        #     if left_pad != 0:
+        #         left_pad = (sum_len_blank // 2) + 1
+        #     else:
+        #         left_pad = sum_len_blank / 2
+        #     right_pad = sum_len_blank // 2
+        
+           
+        # print(f'|{blank: <{right_pad}}{card[x]}{blank: >{left_pad}}| ',end = '')
+    print()    
+    for card in range(z):
+        print('|                | ', end = '')  
+    print()  
+    for card in range(z):
+        print('|                | ', end = '')
+    print()
+    for card in range(z):
+        print('\________________/ ',end='')
+    print()
+    for card in range(z):
+        z = card
+        print('','option:',z,'        ',end='')
+    print()
+def cardify1(card):
+    '''a funnction to display a(n) uno card(s)'''
+    z = 1
+    blanks = len('                ')
+    for q in range(z):
+        print(' ________________  ', end = '')
+    print()
+    for q in range(z):
+        print('/                \\ ',end = '')    
+    print()
+    for q in range(z):
+        print('|                | ', end = '')    
+    print()
+    for q in range(z):
+        print('|                | ', end = '')
+    print()
+    for x in range(z):
+        len_of_cards = len(card)
+        crds_extended = make_car_longer(cardname = card, card_length = len_of_cards,space_length = blanks)
+        print(crds_extended,end='')
+        # if  len_of_cards == blanks:
+        #     print(blanks)
+        #     pass
+        # else:
+        #     sum_len_blank = blanks - len_of_cards
+        #     left_pad = sum_len_blank % 2
+        #     if left_pad != 0:
+        #         left_pad = (sum_len_blank // 2) + 1
+        #     else:
+        #         left_pad = sum_len_blank / 2
+        #     right_pad = sum_len_blank // 2
+        
+           
+        # print(f'|{blank: <{right_pad}}{card[x]}{blank: >{left_pad}}| ',end = '')
+    print()    
+    for card in range(z):
+        print('|                | ', end = '')  
+    print()  
+    for card in range(z):
+        print('|                | ', end = '')
+    print()
+    for card in range(z):
+        print('\________________/ ',end='')
+    print()
+ 
 class uno_player:
     def __init__(self,name,age):
         self.name = name
@@ -79,6 +187,8 @@ if __name__ == '__main__':
 
 
     while True:
+        if len(dump_pile) == 0:
+            dump_pile.append(deck.pop())
         if len(deck) == 1:
             for i in range(len(dump_pile)):
                 deck.append(dump_pile.pop())
@@ -94,19 +204,37 @@ if __name__ == '__main__':
                     name.get_cards()
                     name.level = name.level - 1
             cardss = {}
+            cardsss = []
             for z in range(len(name.cards)):
                 cardss[z] = (name.cards[z])
+                cardsss.append(name.cards[z])
+            len_of_dump_pile = len(dump_pile)
+            len_of_dump_pile = len_of_dump_pile - 1
+            cardify1(deck[len_of_dump_pile])
+            cardify(cardsss)
+            while True:
+                x = int(input('enter an option: '))
+                good = True
+                for z in cardss.keys():
+                    if z == x:
+                        if dump_pile[len_of_dump_pile] == name.cards[x]:
+                            print(f'removing {name.cards[x]}..')
+                            name.add_to_dump(x)
 
 
-            print(cardss)
-
-            x = int(input())
-            for z in cardss.keys():
-                if z == x:
-                    print(f'removing {name.cards[x]}..')
-                    name.add_to_dump(x)
+                        if dump_pile[len_of_dump_pile] == 'WILD' and dump_pile[len_of_dump_pile] == 'WILD DRAW 4':
+                            print(f'removing {name.cards[x]}..')
+                            name.add_to_dump(x)                       
+                        else:
+                            print('invalid option please try a different card or pick another card')
+                            good == False
+                if not good:
+                    break
+                else:
+                    continue
+                    # put clear screen here
             del cardss
-
+            del cardsss
             amountcard = []
             for i in peoples:
                 amountcard.append(len(peoples[i].cards))
