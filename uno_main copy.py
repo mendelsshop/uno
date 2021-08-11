@@ -101,6 +101,8 @@ class uno_player:
         self.level = 7
         self.cards = []
         self.age = age
+    def draw_card(self):
+        self.cards.append(deck.pop())
     def get_cards(self):
         if self.level == 7:
             for i in range(7):
@@ -186,11 +188,15 @@ if __name__ == '__main__':
         for i in range(len(ages)):
             names = str(peoples[ages[i][0]])
             name = peoples[names]
-            print(f'{name.name}\'s turn')
             if len(name.cards) == 0:
                     name.get_cards()
                     name.level = name.level - 1
+            turns = 0
             while True:
+
+                print(f'{name.name}\'s turn')
+
+                exit = False
                 good = False
                 cardss = {}
                 cardsss = []
@@ -199,34 +205,77 @@ if __name__ == '__main__':
                     cardsss.append(name.cards[z])
                 len_of_dump_pile = len(dump_pile)
                 len_of_dump_piles = len_of_dump_pile -1 
+                tpdp = dump_pile[len_of_dump_piles].split(' ',1)
+                print(dump_pile[len_of_dump_piles])
+                if len(tpdp) == 1:
+                    tpdp.append("WILD")
+                c_color = tpdp[0]
+                c_func_number = tpdp[1]
+                for i in range(10):
+                    if turns >= 1:
+                        try:
+                            int(c_func_number)
+                            exit = True
+                        except :
+                            pass
+                    break
+                if exit == True:
+                    break
                 cardify1(dump_pile[len_of_dump_piles])
                 cardify(cardsss)
                 x = int(input('enter an option: '))
+                if x == len(name.cards):
+                    del cardsss
+                    del cardss
+                    cardss = {}
+                    cardsss = []
+                    for z in range(len(name.cards)):
+                        cardss[z] = (name.cards[z])
+                        cardsss.append(name.cards[z])
+                    name.draw_card()
+                    cardify(cardsss)
+                    break
+                    
                 for z in range(len(name.cards)):
                     if z == x:  
                         crdslcd = name.cards[x].split(' ',1)
+                        n_color = crdslcd[0]
+                        
                         if len(crdslcd) == 1:
                             crdslcd.append("WILD")
-                        print(crdslcd)
-                        good = True
-                        if name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
+                        n_func_number = crdslcd[1]
+                        if c_color == n_color:
                             print(f'removing {name.cards[x]}..')
                             name.add_to_dump(x)
                             del cardsss
                             del cardss
+                            good = True
+                        elif c_func_number == n_func_number:
+                            print(f'removing {name.cards[x]}..')
+                            name.add_to_dump(x)
+                            del cardsss
+                            del cardss
+                            good = True
+                        elif name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
+                            print(f'removing {name.cards[x]}..')
+                            name.add_to_dump(x)
+                            del cardsss
+                            del cardss
+                            good = True
                         
                         elif dump_pile[len_of_dump_piles] == name.cards[x]:
                             print(f'removing {name.cards[x]}..')
                             name.add_to_dump(x)
                             del cardsss
                             del cardss
+                            good = True
                             
 
                         elif dump_pile[len_of_dump_piles] == 'WILD' or dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
                             print(f'removing {name.cards[x]}..')
                             name.add_to_dump(x)  
-                        
-                        else:
+                            del cardsss
+                            del cardss
                             good = True
                         break
               
@@ -235,8 +284,8 @@ if __name__ == '__main__':
                         good = False
                 if not good:
                     print('invalid option please try a different card or pick another card')
-                continue
-
+                else:
+                    turns += 1
 
             del cardss
             del cardsss
