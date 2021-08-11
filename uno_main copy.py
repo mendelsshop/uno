@@ -191,7 +191,7 @@ if __name__ == '__main__':
                     name.get_cards()
                     name.level = name.level - 1
             while True:
-                good = True
+                good = False
                 cardss = {}
                 cardsss = []
                 for z in range(len(name.cards)):
@@ -202,48 +202,42 @@ if __name__ == '__main__':
                 cardify1(dump_pile[len_of_dump_piles])
                 cardify(cardsss)
                 x = int(input('enter an option: '))
-                for z in cardss.keys():
-                    if z == x:
+                for z in range(len(name.cards)):
+                    if z == x:  
+                        crdslcd = name.cards[x].split(' ',1)
+                        if len(crdslcd) == 1:
+                            crdslcd.append("WILD")
+                        print(crdslcd)
+                        good = True
                         if name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
                             print(f'removing {name.cards[x]}..')
                             name.add_to_dump(x)
                             del cardsss
                             del cardss
-                            break
+                        
                         elif dump_pile[len_of_dump_piles] == name.cards[x]:
                             print(f'removing {name.cards[x]}..')
                             name.add_to_dump(x)
                             del cardsss
                             del cardss
-                            break
+                            
 
                         elif dump_pile[len_of_dump_piles] == 'WILD' or dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
                             print(f'removing {name.cards[x]}..')
-                            name.add_to_dump(x)                       
+                            name.add_to_dump(x)  
+                        
                         else:
-                            print('invalid option please try a different card or pick another card')
-                            good == False
-                if good:
-                    print('hi')
-                    continue
-                else:
-                    card_num_func = '9'
-                    for q in range(0,10):
-                        print(q)
-                        if card_num_func == q:
-                            con = 'no'
-                        else: 
-                            for namsa in name.cards:
-                                if dump_pile[len_of_dump_piles] != namsa:
-                                    continue
-                                else:
-                                    break
-                                con = 'no'
-
-                    if con == 'no':
+                            good = True
                         break
-                    continue
-                    # put clear screen here
+              
+
+                    elif z != x:
+                        good = False
+                if not good:
+                    print('invalid option please try a different card or pick another card')
+                continue
+
+
             del cardss
             del cardsss
             amountcard = []
