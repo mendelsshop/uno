@@ -10,6 +10,9 @@ import random
 # create leader board for games
 # in game split each card into 2 catagories color and function
 def make_car_longer(cardname,card_length, space_length):
+    ''''
+    this function extends the length of string to match the length of another string
+    '''
     if  card_length == space_length:
         pass
     else:
@@ -27,6 +30,7 @@ def make_car_longer(cardname,card_length, space_length):
         
 def cardify(card):
     '''a funnction to display a(n) uno card(s)'''
+    # not the best way to do this needs to be improved for smaller dispalys
     z = len(card)
     blanks = len('                ')
     for q in range(z):
@@ -60,7 +64,7 @@ def cardify(card):
         print('','option:',z,'        ',end='')
     print()
 def cardify1(card):
-    '''a funnction to display a(n) uno card(s)'''
+    '''a funnction to display an uno cards'''
     z = 1
     blanks = len('                ')
     for q in range(z):
@@ -102,8 +106,11 @@ class uno_player:
         self.cards = []
         self.age = age
     def draw_card(self):
+        '''pop a card from the deck and add it to the players cards'''
         self.cards.append(deck.pop())
     def get_cards(self):
+        '''
+        similar to draw_card but draws cards based on the level of the player'''
         if self.level == 7:
             for i in range(7):
                 self.cards.append(deck.pop())
@@ -111,11 +118,14 @@ class uno_player:
             for i in range(6):
                 self.cards.append(deck.pop())
     def add_to_dump(self,x):
+        '''remove a card from the player and add it to the dump_pile'''
         dump_pile.append(self.cards.pop(x))
     def __str__(self):
+        '''return a string representation of the player'''
         return self.name
 
 def cards(color): 
+    '''a function that returns 1 color set of cards'''
     card = []
     for i in range(0,10):
         card.append(f'{color} {i}')
@@ -129,6 +139,9 @@ def cards(color):
 
 
 def decks():
+    '''a function that returns a list of the uno cards uses the cards function and a for loop to generate most of the cards 
+    besides for the wild cards which are appended to the list and then shuffles the list
+    '''
     color = ['RED', 'BLUE', 'YELLOW', 'GREEN']
     decklist = []
     for i in range(4):
@@ -142,6 +155,9 @@ def decks():
     return decklist
     
 def add_player():
+    '''
+    a function that adds 2 players from the uno_player class and then asks if you want to add more players
+    '''
     peoples = {} 
     playeramount = 1
 
@@ -170,12 +186,17 @@ def add_player():
             playeramount += 1
     return peoples
 if __name__ == '__main__': 
+    
     peoples = add_player()
     dump_pile = []
     deck = decks()
 
 
     while True:
+        '''
+        this loop make sure that there is something in dump_pile(so that we can compare it to players card) make sure that there is something in deck so players can pick cards
+        sorts palyers by age to choose which player starts
+        '''
         if len(dump_pile) == 0:
             dump_pile.append(deck.pop())
         if len(deck) == 1:
@@ -184,7 +205,7 @@ if __name__ == '__main__':
         ages = {}
         for i in peoples:
             ages[peoples[i].name] = (peoples[i].age)
-        ages = sorted(ages.items(),key=lambda x: x[1] )
+        ages = sorted(ages.items(),key=lambda x: x[1] ) #sorting ages in reverse so younest person starts
         for i in range(len(ages)):
             names = str(peoples[ages[i][0]])
             name = peoples[names]
@@ -193,7 +214,19 @@ if __name__ == '__main__':
                     name.level = name.level - 1
             turns = 0
             while True:
-
+                '''
+                this is the loop for each players turn first we add the player players cards to a list and a and a dictinary 
+                then we find the top card of dump_pile and split it into a list of color and function
+                next we check if the player already put a card down if the player a number down we goto the next player or else we continue
+                then we use cardify1 to show the top of dump_pile and cardify to show the players cards
+                then ask the player to choose a card from their deck(the card that they want add to the dump_pile)
+                from know on when the docstring says playercard it means the card that the player selected in the above input
+                first we check if the player wants to pick a card from the deck by inputing the number above the amount of cards the player has 
+                then we check if the players input matches any index of the the list of the player's card's
+                if it does we split playcard into a list color and function
+                then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
+                same if playcard function and top of dump_piles functon the same
+                '''
                 print(f'{name.name}\'s turn')
 
                 exit = False
