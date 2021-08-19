@@ -113,7 +113,6 @@ class uno_player:
         '''
         similar to draw_card but draws cards based on the level of the player'''
         z = self.level
-        print(z)
         for i in range(z):
             self.cards.append(deck.pop())
     def add_to_dump(self,x):
