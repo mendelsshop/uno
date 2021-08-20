@@ -70,6 +70,12 @@ class card:
         # not the best way to do this needs to be improved for smaller dispalys
         z = len(cards)
         blanks = len('                ')
+        if z > 5:
+            z_d= z // 5
+            if z_d %  5 > 0:
+                z_d += 1
+            print(z_d, 'lines')
+
         for q in range(z):
             print(' ________________  ', end = '')
         print()
@@ -223,9 +229,6 @@ if __name__ == '__main__':
                 player_num = str(peoples[ages[i+1][0]])
             except:
                 player_num = str(peoples[ages[0][0]])
-            if name.num_of_cards == 0:
-                    name.get_cards()
-                    name.level = name.level - 1
             turns = 0
             while True:
                 '''
@@ -245,6 +248,9 @@ if __name__ == '__main__':
                 good = False
                 cardss = {}
                 cardsss = []
+                if name.num_of_cards == 0:
+                    name.get_cards()
+                    name.level = name.level - 1
                 for z in range(len(name.cards)):
                     cardss[z] = (name.cards[z])
                     cardsss.append(name.cards[z])
