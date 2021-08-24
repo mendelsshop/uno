@@ -1,2 +1,2 @@
 # uno 
-python text based uno
+python text based u
