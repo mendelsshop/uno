@@ -66,46 +66,75 @@ class card:
         print()
     @staticmethod
     def cardify(cards):
+        print(cards)
         '''a funnction to display a(n) uno card(s)'''
         # not the best way to do this needs to be improved for smaller dispalys
-        z = len(cards)
+        z_d = len(cards)
         blanks = len('                ')
-        if z > 5:
-            z_d= z // 5
+        if z_d > 5:
+            zlp = z_d // 5
+            print(zlp)
             if z_d %  5 > 0:
-                z_d += 1
-            print(z_d, 'lines')
+                zlp += 1
+        else:
+            zlp = 1
+        x = 1
+        zdd = len(cards)
+        while zdd > 5:
+            zdd -= 5
+            
+        print(zlp, 'lines')
+        for i in range(zlp):
+            if x > 1:
+                if x == zlp:
+                    z = zdd
+                else: 
+                    z = 5
+            else:
+                if zlp == 1:
+                    z = zdd
+                else:
+                    z = 5
+            tzl = []
+            for y in range(z):
+                if x > 1:
+                    tz = y + (5 * (x-1)) 
+                else: 
+                    tz = y
+                tzl.append(tz)
+            for q in range(z):
+                print(' ________________  ', end = '')
+            print()
+            for q in range(z):
+                print('/                \\ ',end = '')    
+            print()
+            for q in range(z):
+                print('|                | ', end = '')    
+            print()
+            for q in range(z):
+                print('|                | ', end = '')
+            print()
+            for y in range(z):
+                len_of_cards = len(cards[tzl[y]])
+                crds_extended = card.make_car_longer(cardname = cards[tzl[y]], card_length = len_of_cards,space_length = blanks)
+                print(crds_extended,end='')
+            print()
+               
+            for q in range(z):
+                print('|                | ', end = '')  
+            print()  
+            for q in range(z):
+                print('|                | ', end = '')
+            print()
+            for q in range(z):
+                print('\________________/ ',end='')
+            print()
+            for q in range(z):
+                t = tzl[q]
+                print('','option:',t,'        ',end='')
+            print()
 
-        for q in range(z):
-            print(' ________________  ', end = '')
-        print()
-        for q in range(z):
-            print('/                \\ ',end = '')    
-        print()
-        for q in range(z):
-            print('|                | ', end = '')    
-        print()
-        for q in range(z):
-            print('|                | ', end = '')
-        print()
-        for y in range(z):
-            len_of_cards = len(cards[y])
-            crds_extended = card.make_car_longer(cardname = cards[y], card_length = len_of_cards,space_length = blanks)
-            print(crds_extended,end='')
-        print()    
-        for q in range(z):
-            print('|                | ', end = '')  
-        print()  
-        for q in range(z):
-            print('|                | ', end = '')
-        print()
-        for q in range(z):
-            print('\________________/ ',end='')
-        print()
-        for q in range(z):
-            z = q
-            print('','option:',z,'        ',end='')
-        print()
+            x += 1
     @staticmethod
     def decks():
         '''a function that returns a list of the uno cards uses the cards function and a for loop to generate most of the cards 
@@ -136,6 +165,9 @@ class card:
             card.append(f'{color} SKIP')
         return card
 class uno_game:
+    def __init__(self):
+        self.playercount = 0
+        self.playername = []
     def add_player():
         '''
         a function that adds 2 players from the uno_player class and then asks if you want to add more players
@@ -166,6 +198,7 @@ class uno_game:
                     break
                 peoples[names] = uno_player(names,age) 
                 playeramount += 1
+
         return peoples
     def sort_player(player):
         pass
@@ -195,6 +228,8 @@ class uno_player:
     def __str__(self):
         '''return a string representation of the player'''
         return self.name
+    def __repr__(self):
+        return f'name = {self.name} age = {self.age} cards = {self.cards}'
 
 
 
@@ -289,7 +324,6 @@ if __name__ == '__main__':
                     if len(name.cards) > 0:
                         name.num_of_cards = 1
                     break
-                    
                 for z in range(len(name.cards)):
                     if z == x:  
                         crdslcd = name.cards[x].split(' ',1)
