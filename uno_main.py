@@ -165,16 +165,25 @@ class card:
         return card
 class uno_game:
     def __init__(self):
-        self.playercount = 1
+        self.playercount = 0
         self.playername = []
         self.dump_pile = []
         self.deck = card.decks()
+    def find_next_p(self,instance):
+        
+        index_p = self.playername.index(instance) 
+        print(self.playercount, index_p)
+        if index_p == self.playercount - 1:
+            print('0',0)
+            return repr(self.playername[0])
+        print('next',index_p+1)
+        return repr(self.playername[index_p+1])
     def add_player(self):
         '''
         a function that adds 2 players from the uno_player class and then asks if you want to add more players
         '''
         while True:
-                if self.playercount >= 3:
+                if self.playercount >= 2:
                     continues = input("do you want to add another person? (yes/no) ")
                     if continues == 'yes':
                         pass
@@ -203,13 +212,13 @@ class uno_game:
        a function that sorts the playername list by age ascending
        ''' 
        self.playername  = sorted(self.playername, key= lambda x:x.age )
-       print(self.playername)
     def sort_player_backward(self):
        '''
        a function that sorts the playername list by age descending
        ''' 
        self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
-       print(self.playername)
+    def player_turn(self):
+        pass
     def uno_main(self):
         # a lot of oop stuffs needs to be don here like dump_pile
         self.add_player()
@@ -218,17 +227,15 @@ class uno_game:
             this loop make sure that there is something in dump_pile(so that we can compare it to players card) make sure that there is something in deck so players can pick cards
             sorts palyers by age to choose which player starts
             '''
+            print('next player',self.find_next_p(instance=self.playername[0]))
             if len(self.dump_pile) == 0:
                 self.dump_pile.append(self.deck.pop())
             if len(self.deck) == 1:
                 for i in range(len(self.dump_pile)):
                     self.deck.append(self.dump_pile.pop())
             for i in self.playername:
-                print(type(i))
-                print(repr(i))
                 turns = 0
                 name = i
-                print(type(name))
                 while True:
                     '''
                     this is the loop for each players turn first we add the player players cards to a list and a and a dictinary 
@@ -248,7 +255,7 @@ class uno_game:
                     cardss = {}
                     cardsss = []
                     if name.num_of_cards == 0:
-                        name.get_cards()
+                        name.get_cards(instance = self)
                         name.level = name.level - 1
                     for z in range(len(name.cards)):
                         cardss[z] = (name.cards[z])
@@ -379,19 +386,19 @@ class uno_player:
         self.num_of_cards = 0
         self.age = age
         self.next = None
-    def draw_cards(self,times):
+    def draw_cards(self,times,instance):
         '''pop a card from the deck and add it to the players cards'''
         for i in range(times):
-            self.cards.append(deck.pop())
-    def get_cards(self):
+            self.cards.append(instance.pop())
+    def get_cards(self,instance):
         '''
         similar to draw_card but draws cards based on the level of the player'''
         z = self.level
         for i in range(z):
-            self.cards.append(uno_game.deck.pop())
-    def add_to_dump(self,x):
+            self.cards.append(instance.deck.pop())
+    def add_to_dump(self,x,instance):
         '''remove a card from the player and add it to the dump_pile'''
-        uno_game.dump_pile.append(self.cards.pop(x))
+        instance.dump_pile.append(self.cards.pop(x))
     def set_next(self,data):
         self.next = data
     def __str__(self):
