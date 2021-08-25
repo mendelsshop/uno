@@ -9,7 +9,7 @@ import random
 # add clear function(s)
 # create leader board for games
 # use center instead of make_car_longer
-# reference an instance of a class in a different class for deck, dump_pile modification by an uno_player instnce
+# reference an instance of a class in a different class for deck, dump_pile modification by an uno_player instnce posiibly done by adding parameter to uno_player methods that need stuff from uno_game for the instance of uno_game running
 class card:
     @staticmethod
     def make_car_longer(cardname,card_length, space_length):
