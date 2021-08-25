@@ -8,6 +8,7 @@ import random
 # use comments and docstring to describe whats going on
 # add clear function(s)
 # create leader board for games
+# use center instead of make_car_longer
 class card:
     @staticmethod
     def make_car_longer(cardname,card_length, space_length):
@@ -163,42 +164,51 @@ class card:
         return card
 class uno_game:
     def __init__(self):
-        self.playercount = 0
+        self.playercount = 1
         self.playername = []
-    def add_player():
+    def add_player(self):
         '''
         a function that adds 2 players from the uno_player class and then asks if you want to add more players
         '''
-        peoples = {} 
-        playeramount = 1
-
         while True:
-                if playeramount >= 3:
+                if self.playercount >= 3:
                     continues = input("do you want to add another person? (yes/no) ")
                     if continues == 'yes':
                         pass
                     else:
                         break
                 while True:
-                    names = input(f"player {playeramount} what is your name? ")   
-                    if names in peoples:
+                    names = input(f"player {self.playercount} what is your name? ")   
+                    if names in self.playername:
                         print('plz try another name that name is already taken')
                         continue
                     break
                 while True:
-                    age = input(f'player {playeramount} what is your age? ')
+                    age = input(f'player {self.playercount} what is your age? ')
                     try:
                         age = int(age)
                     except:
                         print('what you entered for age is not an number please try again')
                         continue
                     break
-                peoples[names] = uno_player(names,age) 
-                playeramount += 1
-
-        return peoples
-    def sort_player(player):
-        pass
+                
+                self.playername.append(uno_player(names,age))
+                self.playercount += 1
+        print(self.playername)
+        self.sort_player_foward()
+        self.sort_player_backward()
+    def sort_player_foward(self):
+       '''
+       a function that sorts the playername list by age ascending
+       ''' 
+       self.playername  = sorted(self.playername, key= lambda x:x.age )
+       print(self.playername)
+    def sort_player_backward(self):
+       '''
+       a function that sorts the playername list by age descending
+       ''' 
+       self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
+       print(self.playername)
     def uno_main():
         pass
 
@@ -209,6 +219,7 @@ class uno_player:
         self.cards = []
         self.num_of_cards = 0
         self.age = age
+        self.next = None
     def draw_cards(self,times):
         '''pop a card from the deck and add it to the players cards'''
         for i in range(times):
@@ -222,9 +233,11 @@ class uno_player:
     def add_to_dump(self,x):
         '''remove a card from the player and add it to the dump_pile'''
         dump_pile.append(self.cards.pop(x))
+    def set_next(self,data):
+        self.next = data
     def __str__(self):
         '''return a string representation of the player'''
-        return self.name
+        return [self.name, self.age]
     def __repr__(self):
         return f'name = {self.name} age = {self.age} cards = {self.cards}'
 
@@ -235,7 +248,8 @@ class uno_player:
     
 
 if __name__ == '__main__': 
-    peoples = uno_game.add_player()
+    game1 = uno_game()
+    game1.add_player()
     dump_pile = []
     deck = card.decks()
 
@@ -250,10 +264,11 @@ if __name__ == '__main__':
         if len(deck) == 1:
             for i in range(len(dump_pile)):
                 deck.append(dump_pile.pop())
-        ages = {}
-        for i in peoples:
-            ages[peoples[i].name] = (peoples[i].age)
-        ages = sorted(ages.items(),key=lambda x: x[1] ) #sorting ages in reverse so younest person starts
+        for i in peoples.playername:
+            print(type(i))
+            for z in i:
+                print(z)
+        #ages = sorted(ages.items(),key=lambda x: x[1] ) #sorting ages in reverse so younest person starts
         for i in range(len(ages)):
             names = str(peoples[ages[i][0]])
             name = peoples[names]
