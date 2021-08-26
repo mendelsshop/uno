@@ -1,23 +1,21 @@
 import random
 # stuff to do
-# add funtions to cards when their called 
+# add funtions to cards when their called # almost done
 # add the function that are not in class to game class
-# add stuff from if __name__ == '__main__': to main method in game class
 # clean up code
 # make nicer variables
 # use comments and docstring to describe whats going on
 # add clear function(s)
 # create leader board for games
-# use center instead of make_car_longer
-# reference an instance of a class in a different class for deck, dump_pile modification by an uno_player instnce posiibly done by adding parameter to uno_player methods that need stuff from uno_game for the instance of uno_game running
+# remove make_car_longer function and give it its own github repo
 class card:
-    @staticmethod
-    def make_car_longer(cardname,card_length, space_length):
+    def make_car_longer(cardname, space_length):
         ''''
         this function extends the length of string to match the length of another string
         '''
+        card_length = len(cardname)
         if  card_length == space_length:
-            pass
+            return cardname
         else:
             sum_len_blank = space_length - card_length
             left_pad = sum_len_blank % 2
@@ -27,9 +25,7 @@ class card:
                 left_pad = sum_len_blank / 2
             right_pad = sum_len_blank // 2
         blank = '' 
-        extended_name = f'|{blank: <{right_pad}}{cardname}{blank: >{left_pad}}| '
-        return extended_name
-    @staticmethod
+        return f'{blank: <{right_pad}}{cardname}{blank: >{left_pad}}'
     def cardify1(cards):
         '''a funnction to display an uno cards'''
         z = 1
@@ -45,12 +41,11 @@ class card:
         print()
         for q in range(z):
             print('/ |                | ', end = '')
-        print()
-        for x in range(z):
-            len_of_cards = len(cards)
-            crds_extended = card.make_car_longer(cardname = cards, card_length = len_of_cards,space_length = blanks)
-            print('|',crds_extended,end='')
         print()    
+        for y in range(z):
+            crds_test_extended = cards.center(blanks)
+            print(f'| |{crds_test_extended}| '  ,end= '')
+        print()
         for q in range(z):
             print('| |                | ', end = '')  
         print()  
@@ -66,7 +61,6 @@ class card:
         for q in range(z):
             print('\________________/ ',end='')
         print()
-    @staticmethod
     def cardify(cards):
         '''a funnction to display a(n) uno card(s)'''
         z_d = len(cards)
@@ -81,8 +75,6 @@ class card:
         zdd = len(cards)
         while zdd > 5:
             zdd -= 5
-            
-        print(zlp, 'lines')
         for i in range(zlp):
             if x > 1:
                 if x == zlp:
@@ -107,24 +99,18 @@ class card:
             for q in range(z):
                 print('/                \\ ',end = '')    
             print()
-            for q in range(z):
-                print('|                | ', end = '')    
-            print()
-            for q in range(z):
-                print('|                | ', end = '')
-            print()
+            for i in range(2):
+                for q in range(z):
+                    print('|                | ', end = '')    
+                print()
             for y in range(z):
-                len_of_cards = len(cards[tzl[y]])
-                crds_extended = card.make_car_longer(cardname = cards[tzl[y]], card_length = len_of_cards,space_length = blanks)
-                print(crds_extended,end='')
+                crds_test_extended = cards[tzl[y]].center(blanks)
+                print(f'|{crds_test_extended}| '  ,end= '')
             print()
-               
-            for q in range(z):
-                print('|                | ', end = '')  
-            print()  
-            for q in range(z):
-                print('|                | ', end = '')
-            print()
+            for i in range(2):
+                for q in range(z):
+                    print('|                | ', end = '')    
+                print()
             for q in range(z):
                 print('\________________/ ',end='')
             print()
@@ -132,9 +118,7 @@ class card:
                 t = tzl[q]
                 print('','option:',t,'        ',end='')
             print()
-
             x += 1
-    @staticmethod
     def decks():
         '''a function that returns a list of the uno cards uses the cards function and a for loop to generate most of the cards 
         besides for the wild cards which are appended to the list and then shuffles the list
@@ -150,7 +134,6 @@ class card:
             decklist.append('WILD DRAW 4')
         random.shuffle(decklist)
         return decklist
-    @staticmethod
     def cards(color): 
         '''a function that returns 1 color set of cards'''
         card = []
@@ -172,11 +155,9 @@ class uno_game:
         self.current_p = None
     def find_next_p(self,instance):
         index_p = self.playername.index(instance) 
-        print(self.playercount, index_p)
         if index_p == self.playercount - 1:
             return self.playername[0]
         return self.playername[index_p+1]
-    
     def set_next(self,instance):
         self.current_p = self.find_next_p(instance)
     def set_current(self):
@@ -206,7 +187,6 @@ class uno_game:
                         print('what you entered for age is not an number please try again')
                         continue
                     break
-                
                 self.playername.append(uno_player(names,age))
                 self.playercount += 1
         self.sort_player_foward()
@@ -259,7 +239,6 @@ class uno_game:
                     cardsss = []
                     if name.num_of_cards == 0:
                         name.get_cards(instance = self)
-                        name.level = name.level - 1
                     for z in range(len(name.cards)):
                         cardss[z] = (name.cards[z])
                         cardsss.append(name.cards[z])
@@ -316,7 +295,6 @@ class uno_game:
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
-                            
                             elif self.dump_pile[len_of_dump_piles] == name.cards[x]:
                                 print(f'removing {name.cards[x]}..')
                                 name.add_to_dump(x,self)
@@ -324,8 +302,6 @@ class uno_game:
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
-                                
-
                             elif self.dump_pile[len_of_dump_piles] == 'WILD' or self.dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
                                 print(f'removing {name.cards[x]}..')
                                 name.add_to_dump(x,self)  
@@ -334,8 +310,6 @@ class uno_game:
                                 c_func_number = n_func_number
                                 good = True
                             break
-                  
-
                         elif z != x:
                             good = False
                     if len(name.cards) > 0:
@@ -354,7 +328,6 @@ class uno_game:
                             print(f'skip {player_next}\'s turn')
                         elif c_func_number == "REVERSE":
                             print(f'reversing order')
-
                 del cardss
                 del cardsss
                 amountcard = []
@@ -368,7 +341,6 @@ class uno_game:
                 else:
                     print('incorrect amount of cards')
             
-
 
 class uno_player:
     def __init__(self,name,age):
@@ -388,6 +360,8 @@ class uno_player:
         z = self.level
         for i in range(z):
             self.cards.append(instance.deck.pop())
+        self.level -= 1
+        self.num_of_cards = 1
     def add_to_dump(self,x,instance):
         '''remove a card from the player and add it to the dump_pile'''
         instance.dump_pile.append(self.cards.pop(x))
@@ -398,12 +372,6 @@ class uno_player:
         return self.name
     def __repr__(self):
         return f'name = {self.name} age = {self.age} cards = {self.cards}'
-
-
-
-
-
-    
 
 if __name__ == '__main__': 
     game1 = uno_game()
