@@ -18,7 +18,6 @@ class card:
         '''
         z = 1
         blanks = 16
-        print(blanks)
         for q in range(z):
             print('   ________________  ', end = '')
         print()
@@ -426,11 +425,14 @@ class uno_player:
         return the default representation of the uno_player instance
         '''
         return self.name
+
+    
     def __repr__(self):
         '''
-        returns values of uno_player instance use for debbuging
+        returns values of uno_player instance usefull for debbuging
         '''
         return f'name = {self.name}, age = {self.age}, cards = {self.cards} are there card {self.num_of_cards > 0}'
+
 
 if __name__ == '__main__': 
     '''
