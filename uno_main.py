@@ -169,15 +169,18 @@ class uno_game:
         self.playername = []
         self.dump_pile = []
         self.deck = card.decks()
+        self.current_p = None
     def find_next_p(self,instance):
-        
         index_p = self.playername.index(instance) 
         print(self.playercount, index_p)
         if index_p == self.playercount - 1:
-            print('0',0)
             return repr(self.playername[0])
-        print('next',index_p+1)
         return repr(self.playername[index_p+1])
+    
+    def set_next(self,instance):
+        self.current_p = self.find_next_p(instance)
+    def set_current(self):
+        self.current_p = self.playername[0]
     def add_player(self):
         '''
         a function that adds 2 players from the uno_player class and then asks if you want to add more players
@@ -222,20 +225,21 @@ class uno_game:
     def uno_main(self):
         # a lot of oop stuffs needs to be don here like dump_pile
         self.add_player()
+        self.set_current()
         while True:
             '''
             this loop make sure that there is something in dump_pile(so that we can compare it to players card) make sure that there is something in deck so players can pick cards
             sorts palyers by age to choose which player starts
             '''
-            print('next player',self.find_next_p(instance=self.playername[0]))
             if len(self.dump_pile) == 0:
                 self.dump_pile.append(self.deck.pop())
             if len(self.deck) == 1:
                 for i in range(len(self.dump_pile)):
                     self.deck.append(self.dump_pile.pop())
-            for i in self.playername:
+            while True:
                 turns = 0
-                name = i
+                name = self.current_p
+                player_next = self.find_next_p(name)
                 while True:
                     '''
                     this is the loop for each players turn first we add the player players cards to a list and a and a dictinary 
@@ -305,38 +309,38 @@ class uno_game:
                             n_func_number = crdslcd[1]
                             if c_color == n_color:
                                 print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x)
+                                name.add_to_dump(x,self)
                                 del cardsss
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
                             elif c_func_number == n_func_number:
                                 print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x)
+                                name.add_to_dump(x,self)
                                 del cardsss
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
                             elif name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
                                 print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x)
+                                name.add_to_dump(x,self)
                                 del cardsss
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
                             
-                            elif dump_pile[len_of_dump_piles] == name.cards[x]:
+                            elif self.dump_pile[len_of_dump_piles] == name.cards[x]:
                                 print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x)
+                                name.add_to_dump(x,self)
                                 del cardsss
                                 del cardss
                                 c_func_number = n_func_number
                                 good = True
                                 
 
-                            elif dump_pile[len_of_dump_piles] == 'WILD' or dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
+                            elif self.dump_pile[len_of_dump_piles] == 'WILD' or self.dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
                                 print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x)  
+                                name.add_to_dump(x,self)  
                                 del cardsss
                                 del cardss
                                 c_func_number = n_func_number
@@ -355,21 +359,21 @@ class uno_game:
                     else:
                         turns += 1
                         if c_func_number == "DRAW 4":
-                            peoples[player_num].draw_cards(4)
+                            player_next.draw_cards(4)
                         elif c_func_number == "DRAW 2":
-                            peoples[player_num].draw_cards(2)
+                            player_next.draw_cards(2)
                         elif c_func_number == "SKIP":
-                            print(f'skip {peoples[player_num]}\'s turn')
+                            print(f'skip {player_next}\'s turn')
                         elif c_func_number == "REVERSE":
                             print(f'reversing order')
 
                 del cardss
                 del cardsss
                 amountcard = []
-                for i in peoples:
-                    amountcard.append(len(peoples[i].cards))
-                amountcard.append(len(deck))
-                amountcard.append(len(dump_pile))
+                for i in self.playername:
+                    amountcard.append(len(i.cards))
+                amountcard.append(len(self.deck))
+                amountcard.append(len(self.dump_pile))
                 sums = sum(amountcard)
                 if sums == 108:
                     del amountcard
