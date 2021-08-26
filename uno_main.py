@@ -174,8 +174,8 @@ class uno_game:
         index_p = self.playername.index(instance) 
         print(self.playercount, index_p)
         if index_p == self.playercount - 1:
-            return repr(self.playername[0])
-        return repr(self.playername[index_p+1])
+            return self.playername[0]
+        return self.playername[index_p+1]
     
     def set_next(self,instance):
         self.current_p = self.find_next_p(instance)
@@ -254,7 +254,6 @@ class uno_game:
                     then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
                     same if playcard function and top of dump_piles functon the same
                     '''
-                    exit = False
                     good = False
                     cardss = {}
                     cardsss = []
@@ -271,31 +270,21 @@ class uno_game:
                         tpdp.append("WILD")
                     c_color = tpdp[0]
                     c_func_number = tpdp[1]
-                    for i in range(10):
-                        if turns >= 1:
-                            try:
-                                int(c_func_number)
-                                exit = True
-                            except :
-                                pass
-                        break
-                    if exit == True:
-                        break
+                    if turns >= 1:
+                        try:
+                            int(c_func_number)
+                            self.set_next(name)
+                            break
+                        except :
+                            pass
                     print(f'{name.name}\'s turn')
-                    
                     card.cardify1(self.dump_pile[len_of_dump_piles])
                     card.cardify(cardsss)
                     x = int(input('enter an option: '))
                     if x == len(name.cards):
-                        del cardsss
-                        del cardss
-                        cardss = {}
-                        cardsss = []
-                        name.draw_cards(1)
-                        for z in range(len(name.cards)):
-                            cardss[z] = (name.cards[z])
-                            cardsss.append(name.cards[z])
-                        card.cardify(cardsss)
+                        name.draw_cards(1,self)
+                        print('drawing card...')
+                        self.set_next(name)
                         if len(name.cards) > 0:
                             name.num_of_cards = 1
                         break
@@ -303,7 +292,6 @@ class uno_game:
                         if z == x:  
                             crdslcd = name.cards[x].split(' ',1)
                             n_color = crdslcd[0]
-                            
                             if len(crdslcd) == 1:
                                 crdslcd.append("WILD")
                             n_func_number = crdslcd[1]
@@ -359,9 +347,9 @@ class uno_game:
                     else:
                         turns += 1
                         if c_func_number == "DRAW 4":
-                            player_next.draw_cards(4)
+                            player_next.draw_cards(4,self)
                         elif c_func_number == "DRAW 2":
-                            player_next.draw_cards(2)
+                            player_next.draw_cards(2,self)
                         elif c_func_number == "SKIP":
                             print(f'skip {player_next}\'s turn')
                         elif c_func_number == "REVERSE":
@@ -393,7 +381,7 @@ class uno_player:
     def draw_cards(self,times,instance):
         '''pop a card from the deck and add it to the players cards'''
         for i in range(times):
-            self.cards.append(instance.pop())
+            self.cards.append(instance.deck.pop())
     def get_cards(self,instance):
         '''
         similar to draw_card but draws cards based on the level of the player'''
@@ -407,7 +395,7 @@ class uno_player:
         self.next = data
     def __str__(self):
         '''return a string representation of the player'''
-        return [self.name, self.age]
+        return self.name
     def __repr__(self):
         return f'name = {self.name} age = {self.age} cards = {self.cards}'
 
