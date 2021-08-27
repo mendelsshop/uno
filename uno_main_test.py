@@ -255,6 +255,7 @@ class uno_game:
                 turns = 0
                 name = self.current_p
                 player_next = self.find_next_p(name)
+                self.player_turn(name)
                 while True:
                     '''
                     this is the loop for each players turn first we add the player players cards to a list and a and a dictinary 
