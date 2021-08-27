@@ -357,6 +357,11 @@ class uno_game:
         pass
     
 
+    def check_card_amount(self):
+        pass
+
+    
+
     def uno_main(self):
         # a lot of oop stuffs needs to be don here like dump_pile
         self.add_player()
