@@ -221,11 +221,131 @@ class uno_game:
        self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
 
 
-    def player_turn(self, current):
+    def player_turn(self,):
         '''
         what happens in current players turn 
+        this is the method for each players turn first we add the player players cards to a list and a dictinary 
+        then we find the top card of dump_pile and split it into a list of color and function
+        next we check if the player already put a card down if the player a number down we goto the next player or else we continue
+        then we use display_top_of_pile to show the top of dump_pile and cardify to show the players cards
+        then ask the player to choose a card from their deck(the card that they want add to the dump_pile)
+        from know on when the docstring says playercard it means the card that the player selected in the above input
+        first we check if the player wants to pick a card from the deck by inputing the number above the amount of cards the player has 
+        then we check if the players input matches any index of the the list of the player's card's
+        if it does we split playcard into a list color and function
+        then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
+        same if playcard function and top of dump_piles functon the same
         '''
-        pass
+        turns = 0
+        name = self.current_p
+        player_next = self.find_next_p(name)
+        good = False
+        cardss = {}
+        cardsss = []
+        if name.num_of_cards == 0:
+            name.get_cards(instance = self)
+        for z in range(len(name.cards)):
+            cardss[z] = (name.cards[z])
+            cardsss.append(name.cards[z])
+        len_of_dump_pile = len(self.dump_pile)
+        len_of_dump_piles = len_of_dump_pile -1 
+        tpdp = self.dump_pile[len_of_dump_piles].split(' ',1)
+        if len(tpdp) == 1:
+            tpdp.append("WILD")
+        c_color = tpdp[0]
+        c_func_number = tpdp[1]
+        if turns >= 1:
+            try:
+                int(c_func_number)
+                self.set_next(name)
+                return False
+            except :
+                pass
+        print(f'{name.name}\'s turn')
+        card.display_top_of_pile(self.dump_pile[len_of_dump_piles])
+        card.cardify(cardsss)
+        x = int(input('enter an option: '))
+        if x == len(name.cards):
+            name.draw_cards(1,self)
+            print('drawing card...')
+            self.set_next(name)
+            if len(name.cards) > 0:
+                name.num_of_cards = 1
+            return False
+        for z in range(len(name.cards)):
+            if z == x:  
+                crdslcd = name.cards[x].split(' ',1)
+                n_color = crdslcd[0]
+                if len(crdslcd) == 1:
+                    crdslcd.append("WILD")
+                n_func_number = crdslcd[1]
+                if c_color == n_color:
+                    print(f'removing {name.cards[x]}..')
+                    name.add_to_dump(x,self)
+                    del cardsss
+                    del cardss
+                    c_func_number = n_func_number
+                    good = True
+                elif c_func_number == n_func_number:
+                    print(f'removing {name.cards[x]}..')
+                    name.add_to_dump(x,self)
+                    del cardsss
+                    del cardss
+                    c_func_number = n_func_number
+                    good = True
+                elif name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
+                    print(f'removing {name.cards[x]}..')
+                    name.add_to_dump(x,self)
+                    del cardsss
+                    del cardss
+                    c_func_number = n_func_number
+                    good = True
+                elif self.dump_pile[len_of_dump_piles] == name.cards[x]:
+                    print(f'removing {name.cards[x]}..')
+                    name.add_to_dump(x,self)
+                    del cardsss
+                    del cardss
+                    c_func_number = n_func_number
+                    good = True
+                elif self.dump_pile[len_of_dump_piles] == 'WILD' or self.dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
+                    print(f'removing {name.cards[x]}..')
+                    name.add_to_dump(x,self)  
+                    del cardsss
+                    del cardss
+                    c_func_number = n_func_number
+                    good = True
+                break
+            elif z != x:
+                good = False
+        if len(name.cards) > 0:
+            name.num_of_cards = 1
+        elif len(name.cards) == 0:
+            name.num_of_cards = 0
+        if not good:
+            print('invalid option please try a different card or pick another card')
+        else:
+            turns += 1
+            if c_func_number == "DRAW 4":
+                player_next.draw_cards(4,self)
+            elif c_func_number == "DRAW 2":
+                player_next.draw_cards(2,self)
+            elif c_func_number == "SKIP":
+                print(f'skip {player_next}\'s turn')
+            elif c_func_number == "REVERSE":
+                print(f'reversing order')
+        del cardss
+        del cardsss
+        amountcard = []
+        for i in self.playername:
+            amountcard.append(len(i.cards))
+        amountcard.append(len(self.deck))
+        amountcard.append(len(self.dump_pile))
+        sums = sum(amountcard)
+        if sums == 108:
+            del amountcard
+        else:
+            print('incorrect amount of cards')
+
 
     def check_for_winner(self):
         '''
@@ -252,131 +372,10 @@ class uno_game:
                 for i in range(len(self.dump_pile)):
                     self.deck.append(self.dump_pile.pop())
             while True:
-                turns = 0
-                name = self.current_p
-                player_next = self.find_next_p(name)
-                self.player_turn(name)
-                while True:
-                    '''
-                    this is the loop for each players turn first we add the player players cards to a list and a and a dictinary 
-                    then we find the top card of dump_pile and split it into a list of color and function
-                    next we check if the player already put a card down if the player a number down we goto the next player or else we continue
-                    then we use display_top_of_pile to show the top of dump_pile and cardify to show the players cards
-                    then ask the player to choose a card from their deck(the card that they want add to the dump_pile)
-                    from know on when the docstring says playercard it means the card that the player selected in the above input
-                    first we check if the player wants to pick a card from the deck by inputing the number above the amount of cards the player has 
-                    then we check if the players input matches any index of the the list of the player's card's
-                    if it does we split playcard into a list color and function
-                    then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
-                    same if playcard function and top of dump_piles functon the same
-                    '''
-                    good = False
-                    cardss = {}
-                    cardsss = []
-                    if name.num_of_cards == 0:
-                        name.get_cards(instance = self)
-                    for z in range(len(name.cards)):
-                        cardss[z] = (name.cards[z])
-                        cardsss.append(name.cards[z])
-                    len_of_dump_pile = len(self.dump_pile)
-                    len_of_dump_piles = len_of_dump_pile -1 
-                    tpdp = self.dump_pile[len_of_dump_piles].split(' ',1)
-                    if len(tpdp) == 1:
-                        tpdp.append("WILD")
-                    c_color = tpdp[0]
-                    c_func_number = tpdp[1]
-                    if turns >= 1:
-                        try:
-                            int(c_func_number)
-                            self.set_next(name)
-                            break
-                        except :
-                            pass
-                    print(f'{name.name}\'s turn')
-                    card.display_top_of_pile(self.dump_pile[len_of_dump_piles])
-                    card.cardify(cardsss)
-                    x = int(input('enter an option: '))
-                    if x == len(name.cards):
-                        name.draw_cards(1,self)
-                        print('drawing card...')
-                        self.set_next(name)
-                        if len(name.cards) > 0:
-                            name.num_of_cards = 1
-                        break
-                    for z in range(len(name.cards)):
-                        if z == x:  
-                            crdslcd = name.cards[x].split(' ',1)
-                            n_color = crdslcd[0]
-                            if len(crdslcd) == 1:
-                                crdslcd.append("WILD")
-                            n_func_number = crdslcd[1]
-                            if c_color == n_color:
-                                print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x,self)
-                                del cardsss
-                                del cardss
-                                c_func_number = n_func_number
-                                good = True
-                            elif c_func_number == n_func_number:
-                                print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x,self)
-                                del cardsss
-                                del cardss
-                                c_func_number = n_func_number
-                                good = True
-                            elif name.cards[x] == 'WILD' or name.cards[x] == "WILD DRAW 4":
-                                print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x,self)
-                                del cardsss
-                                del cardss
-                                c_func_number = n_func_number
-                                good = True
-                            elif self.dump_pile[len_of_dump_piles] == name.cards[x]:
-                                print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x,self)
-                                del cardsss
-                                del cardss
-                                c_func_number = n_func_number
-                                good = True
-                            elif self.dump_pile[len_of_dump_piles] == 'WILD' or self.dump_pile[len_of_dump_piles] == 'WILD DRAW 4':
-                                print(f'removing {name.cards[x]}..')
-                                name.add_to_dump(x,self)  
-                                del cardsss
-                                del cardss
-                                c_func_number = n_func_number
-                                good = True
-                            break
-                        elif z != x:
-                            good = False
-                    if len(name.cards) > 0:
-                        name.num_of_cards = 1
-                    elif len(name.cards) == 0:
-                        name.num_of_cards = 0
-                    if not good:
-                        print('invalid option please try a different card or pick another card')
-                    else:
-                        turns += 1
-                        if c_func_number == "DRAW 4":
-                            player_next.draw_cards(4,self)
-                        elif c_func_number == "DRAW 2":
-                            player_next.draw_cards(2,self)
-                        elif c_func_number == "SKIP":
-                            print(f'skip {player_next}\'s turn')
-                        elif c_func_number == "REVERSE":
-                            print(f'reversing order')
-                del cardss
-                del cardsss
-                amountcard = []
-                for i in self.playername:
-                    amountcard.append(len(i.cards))
-                amountcard.append(len(self.deck))
-                amountcard.append(len(self.dump_pile))
-                sums = sum(amountcard)
-                if sums == 108:
-                    del amountcard
-                else:
-                    print('incorrect amount of cards')
-            
+
+                self.player_turn()
+
+        
 
 class uno_player:
     def __init__(self,name,age):
