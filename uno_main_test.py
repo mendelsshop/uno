@@ -221,7 +221,7 @@ class uno_game:
        self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
 
 
-    def player_turn(self,):
+    def player_turn(self):
         '''
         what happens in current players turn 
         this is the method for each players turn first we add the player players cards to a list and a dictinary 
@@ -256,9 +256,10 @@ class uno_game:
         c_func_number = tpdp[1]
         if turns >= 1:
             try:
+                print(player_next,'turns')
                 int(c_func_number)
-                self.set_next(name)
-                return False
+                self.set_next(player_next)
+                return
             except :
                 pass
         print(f'{name.name}\'s turn')
@@ -271,7 +272,7 @@ class uno_game:
             self.set_next(name)
             if len(name.cards) > 0:
                 name.num_of_cards = 1
-            return False
+            return 
         for z in range(len(name.cards)):
             if z == x:  
                 crdslcd = name.cards[x].split(' ',1)
@@ -333,19 +334,13 @@ class uno_game:
                 print(f'skip {player_next}\'s turn')
             elif c_func_number == "REVERSE":
                 print(f'reversing order')
-        del cardss
-        del cardsss
-        amountcard = []
-        for i in self.playername:
-            amountcard.append(len(i.cards))
-        amountcard.append(len(self.deck))
-        amountcard.append(len(self.dump_pile))
-        sums = sum(amountcard)
-        if sums == 108:
-            del amountcard
-        else:
-            print('incorrect amount of cards')
-
+        try:
+            del cardss
+            del cardsss
+        except:
+            pass
+        self.check_card_amount()
+        return 'hi'
 
     def check_for_winner(self):
         '''
@@ -358,9 +353,22 @@ class uno_game:
     
 
     def check_card_amount(self):
-        pass
+        '''
+        a method that makes sure that no card have been added or removeved from the game
+        '''
+        amountcard = []
+        for i in self.playername:
+            amountcard.append(len(i.cards))
+        amountcard.append(len(self.deck))
+        amountcard.append(len(self.dump_pile))
+        sums = sum(amountcard)
+        if sums == 108:
+            del amountcard
+        else:
+            print('incorrect amount of cards')
 
-    
+
+
 
     def uno_main(self):
         # a lot of oop stuffs needs to be don here like dump_pile
@@ -377,8 +385,8 @@ class uno_game:
                 for i in range(len(self.dump_pile)):
                     self.deck.append(self.dump_pile.pop())
             while True:
-
-                self.player_turn()
+                z = self.player_turn()
+                print(z)
 
         
 
