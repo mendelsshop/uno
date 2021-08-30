@@ -236,7 +236,6 @@ class uno_game:
         then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
         same if playcard function and top of dump_piles functon the same
         '''
-        turns = 0
         name = self.current_p
         player_next = self.find_next_p(name)
         good = False
@@ -254,15 +253,16 @@ class uno_game:
             tpdp.append("WILD")
         c_color = tpdp[0]
         c_func_number = tpdp[1]
-        if turns >= 1:
+        if name.turn_p_turn >= 1:
             try:
-                print(player_next,'turns')
                 int(c_func_number)
-                self.set_next(player_next)
+                self.set_next(name)
+                name.turn_p_turn = 0
                 return
             except :
                 pass
         print(f'{name.name}\'s turn')
+        print(f'{player_next.name} is next')
         card.display_top_of_pile(self.dump_pile[len_of_dump_piles])
         card.cardify(cardsss)
         x = int(input('enter an option: '))
@@ -272,6 +272,7 @@ class uno_game:
             self.set_next(name)
             if len(name.cards) > 0:
                 name.num_of_cards = 1
+            name.turn_p_turn = 0
             return 
         for z in range(len(name.cards)):
             if z == x:  
@@ -325,7 +326,7 @@ class uno_game:
         if not good:
             print('invalid option please try a different card or pick another card')
         else:
-            turns += 1
+            name.turn_p_turn += 1
             if c_func_number == "DRAW 4":
                 player_next.draw_cards(4,self)
             elif c_func_number == "DRAW 2":
@@ -340,7 +341,7 @@ class uno_game:
         except:
             pass
         self.check_card_amount()
-        return 'hi'
+        return
 
     def check_for_winner(self):
         '''
@@ -385,8 +386,8 @@ class uno_game:
                 for i in range(len(self.dump_pile)):
                     self.deck.append(self.dump_pile.pop())
             while True:
-                z = self.player_turn()
-                print(z)
+                self.player_turn()
+                break
 
         
 
@@ -398,6 +399,7 @@ class uno_player:
         self.num_of_cards = 0
         self.age = age
         self.next = None
+        self.turn_p_turn = 0
 
 
     def draw_cards(self,times,instance):
