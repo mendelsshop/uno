@@ -50,6 +50,7 @@ class card:
             print('\________________/ ',end='')
         print()
         
+
     def cardify(cards):
         '''
         a funnction to display a(n) uno card(s)
@@ -160,18 +161,20 @@ class uno_game:
         self.deck = card.decks()
         self.current_p = None
         self.winner = None
+        self.player_next = None
 
-
-    def find_next_p(self,instance):
-        index_p = self.playername.index(instance) 
+    def find_next_p(self,*args):
+        try:
+            index_p = self.playername.index(args[0])
+        except:
+            index_p = self.playername.index(self.current_p) 
         if index_p == self.playercount - 1:
             return self.playername[0]
         return self.playername[index_p+1]
 
 
     def set_next(self,instance):
-        self.current_p = self.find_next_p(instance)
-
+        self.current_p = instance
 
     def set_current(self):
         self.current_p = self.playername[0]
@@ -236,8 +239,19 @@ class uno_game:
         then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
         same if playcard function and top of dump_piles functon the same
         '''
+        
+        if 'skip' in globals():
+            skips = True
+        else:
+            skips = False
         name = self.current_p
-        player_next = self.find_next_p(name)
+        global skip
+        if  skips == False:
+            skip  = 0
+        else:
+            pass
+        if  skip  == 0:
+            self.player_next = self.find_next_p()
         good = False
         cardss = {}
         cardsss = []
@@ -256,20 +270,24 @@ class uno_game:
         if name.turn_p_turn >= 1:
             try:
                 int(c_func_number)
-                self.set_next(name)
+                print('current',self.current_p)
+                print('next',self.player_next)
+                self.set_next(self.player_next)
                 name.turn_p_turn = 0
+                skip = 0
                 return
             except :
                 pass
         print(f'{name.name}\'s turn')
-        print(f'{player_next.name} is next')
         card.display_top_of_pile(self.dump_pile[len_of_dump_piles])
         card.cardify(cardsss)
         x = int(input('enter an option: '))
         if x == len(name.cards):
             name.draw_cards(1,self)
             print('drawing card...')
-            self.set_next(name)
+            print('current',self.current_p)
+            print('next',self.player_next)
+            self.set_next(self.player_next)
             if len(name.cards) > 0:
                 name.num_of_cards = 1
             name.turn_p_turn = 0
@@ -328,11 +346,13 @@ class uno_game:
         else:
             name.turn_p_turn += 1
             if c_func_number == "DRAW 4":
-                player_next.draw_cards(4,self)
+                self.player_next.draw_cards(4,self)
             elif c_func_number == "DRAW 2":
-                player_next.draw_cards(2,self)
+                self.player_next.draw_cards(2,self)
             elif c_func_number == "SKIP":
-                print(f'skip {player_next}\'s turn')
+                skip = 1
+                self.player_next = self.find_next_p(self.player_next)
+                print(f'skip {self.player_next}\'s turn')
             elif c_func_number == "REVERSE":
                 print(f'reversing order')
         try:
@@ -340,8 +360,11 @@ class uno_game:
             del cardsss
         except:
             pass
+        print('current',self.current_p)
+        print('next',self.player_next)
         self.check_card_amount()
         return
+
 
     def check_for_winner(self):
         '''
@@ -369,8 +392,6 @@ class uno_game:
             print('incorrect amount of cards')
 
 
-
-
     def uno_main(self):
         # a lot of oop stuffs needs to be don here like dump_pile
         self.add_player()
@@ -390,7 +411,6 @@ class uno_game:
                 break
 
         
-
 class uno_player:
     def __init__(self,name,age):
         self.name = name
