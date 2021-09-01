@@ -9,6 +9,7 @@ import random
 # create leader board for games
 # remove make_car_longer function and give it its own github repo
 # remove num_of_cards attribue from uno_player class and just use the length of uno_player card list attribute
+# use any() for checking if card is correct
 
 
 class card:
