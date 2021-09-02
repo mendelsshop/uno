@@ -163,6 +163,7 @@ class uno_game:
         self.current_p = None
         self.winner = None
         self.player_next = None
+        self.reversed = 0
 
     def find_next_p(self,*args):
         try:
@@ -208,21 +209,18 @@ class uno_game:
                     break
                 self.playername.append(uno_player(names,age))
                 self.playercount += 1
-        self.sort_player_foward()
+        self.sort_player()
 
 
-    def sort_player_foward(self):
-       '''
-       a function that sorts the playername list by age ascending
-       ''' 
-       self.playername  = sorted(self.playername, key= lambda x:x.age )
-
-
-    def sort_player_backward(self):
-       '''
-       a function that sorts the playername list by age descending
-       ''' 
-       self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
+    def sort_player(self):
+        '''
+        a function that sorts the playername list by age ascending or descending 
+        depending on the variable self.reversed
+        ''' 
+        if self.reversed == 0:
+            self.playername  = sorted(self.playername, key= lambda x:x.age )
+        elif self.reversed == 1:
+            self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
 
 
     def player_turn(self):
@@ -355,6 +353,9 @@ class uno_game:
                 self.player_next = self.find_next_p(self.player_next)
                 print(f'skip {self.player_next}\'s turn')
             elif c_func_number == "REVERSE":
+                self.reversed = 1
+                self.sort_player()
+                self.next = self.find_next_p()
                 print(f'reversing order')
         try:
             del cardss
