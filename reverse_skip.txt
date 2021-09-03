@@ -1,0 +1,16 @@
+1 = original first player
+2 = original second player
+etc
+x = skiped player
+# = comments
+3	4	1	2	3	4	1	2
+		skip	x				
+				# the x here doesnt matter because when you reverse you're reverseing from the original player not from after the skiped player
+		reverse
+3	2	1	4 	3	2	1	4 
+			reverse
+			skip
+1	2	3	4	1	2	3	4
+				x	next
+
+# i think this is how reverse skip works

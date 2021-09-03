@@ -10,8 +10,10 @@ import random
 # remove make_car_longer function and give it its own github repo
 # remove num_of_cards attribue from uno_player class and just use the length of uno_player card list attribute
 # use any() for checking if card is correct
-
-
+# pep 8
+# cleaner code
+# docstrings on classes
+# try accept for card selection, and show option for drwawing card
 class card:
     def display_top_of_pile(cards):
         '''
@@ -51,7 +53,6 @@ class card:
             print('\________________/ ',end='')
         print()
         
-
     def cardify(cards):
         '''
         a funnction to display a(n) uno card(s)
@@ -114,7 +115,6 @@ class card:
             print()
             x += 1
 
-
     def decks():
         '''
         a function that returns a list of the uno cards uses the cards function and a for loop to generate most of the cards 
@@ -131,7 +131,6 @@ class card:
             decklist.append('WILD DRAW 4')
         random.shuffle(decklist)
         return decklist
-
 
     def cards(color): 
         '''
@@ -174,13 +173,11 @@ class uno_game:
             return self.playername[0]
         return self.playername[index_p+1]
 
-
     def set_next(self,instance):
         self.current_p = instance
 
     def set_current(self):
         self.current_p = self.playername[0]
-
 
     def add_player(self):
         '''
@@ -211,7 +208,6 @@ class uno_game:
                 self.playercount += 1
         self.sort_player()
 
-
     def sort_player(self):
         '''
         a function that sorts the playername list by age ascending or descending 
@@ -221,7 +217,6 @@ class uno_game:
             self.playername  = sorted(self.playername, key= lambda x:x.age )
         elif self.reversed == 1:
             self.playername  = sorted(self.playername, key= lambda x:x.age , reverse=True)
-
 
     def player_turn(self):
         '''
@@ -238,7 +233,6 @@ class uno_game:
         then we check if the playcard color is the same as the top dump_piles color then we add playcard to dump_pile
         same if playcard function and top of dump_piles functon the same
         '''
-        
         if 'skip' in globals():
             skips = True
         else:
@@ -343,6 +337,7 @@ class uno_game:
         if not good:
             print('invalid option please try a different card or pick another card')
         else:
+            # maybee make method for this
             name.turn_p_turn += 1
             if c_func_number == "DRAW 4":
                 self.player_next.draw_cards(4,self)
@@ -367,7 +362,6 @@ class uno_game:
         self.check_card_amount()
         return
 
-
     def check_for_winner(self):
         '''
         checks if an instance of uno_player's level is equal to 0 and cards is equal to 0 
@@ -377,7 +371,6 @@ class uno_game:
         '''
         pass
     
-
     def check_card_amount(self):
         '''
         a method that makes sure that no card have been added or removeved from the game
@@ -393,9 +386,9 @@ class uno_game:
         else:
             print('incorrect amount of cards')
 
-
     def uno_main(self):
-        # a lot of oop stuffs needs to be don here like dump_pile
+        '''uno game method were the game happens
+        '''
         self.add_player()
         self.set_current()
         while True:
@@ -423,14 +416,12 @@ class uno_player:
         self.next = None
         self.turn_p_turn = 0
 
-
     def draw_cards(self,times,instance):
         '''
         pop a card from the deck and add it to the players cards
         '''
         for i in range(times):
             self.cards.append(instance.deck.pop())
-
 
     def get_cards(self,instance):
         '''
@@ -442,13 +433,11 @@ class uno_player:
         self.level -= 1
         self.num_of_cards = 1
 
-
     def add_to_dump(self,x,instance):
         '''
         remove a card from the player and add it to the dump_pile
         '''
         instance.dump_pile.append(self.cards.pop(x))
-
 
     def set_next(self,data):
         '''
@@ -456,13 +445,11 @@ class uno_player:
         '''
         self.next = data
 
-
     def __str__(self):
         '''
         return the default representation of the uno_player instance
         '''
         return self.name
-
     
     def __repr__(self):
         '''
